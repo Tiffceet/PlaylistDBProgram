@@ -85,7 +85,7 @@ class WPLReader {
         // src = in.substring(in.indexOf("src=\"") + 5, in.indexOf("tid") - 2);
         src = in.substring(in.indexOf("src=\"") + 5, in.length());
         src = src.substring(0, src.indexOf("\"") + 1); // + 1 because getSongName_fromSRC() needs indicator for the end of song name
-        System.out.println("srcval: " + src);
+        // System.out.println("srcval: " + src);
         
         return src;
     }

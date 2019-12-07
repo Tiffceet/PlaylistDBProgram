@@ -76,23 +76,44 @@ public class MainFrame extends javax.swing.JFrame {
         // add filedrop listner to Playlist Panel (ScrollPane inherits Panel obviously :3)
         new FileDrop(this.jScrollPane1, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
-                System.out.println("PLS DO NOT CRASH THANKS");
+                // System.out.println("PLS DO NOT CRASH THANKS");
 
+                // When theres no database loaded into program, consider giving user a error msg?
                 if (!ProgramActivated) {
                     return;
                 }
+                if (files[0].getAbsolutePath().toLowerCase().endsWith(".wpl")) {
+                    WPLReader wpl = new WPLReader(files[0]);
+                    if (wpl.status == 0) {
+                        pm.insertPlaylist(wpl.playlist);
 
-                WPLReader wpl = new WPLReader(files[0]);
-                if (wpl.status == 0) {
-                    pm.insertPlaylist(wpl.playlist);
+                        // convert ArrayList to array as always
+                        String[] arr = new String[wpl.songs.size()];
+                        for (int a = 0; a < arr.length; a++) {
+                            arr[a] = wpl.songs.get(a);
+                        }
 
-                    // convert ArrayList to array as always
-                    String[] arr = new String[wpl.songs.size()];
-                    for (int a = 0; a < arr.length; a++) {
-                        arr[a] = wpl.songs.get(a);
+                        promptAddSongs(wpl.playlist, arr);
                     }
-
-                    promptAddSongs(wpl.playlist, arr);
+                    return;
+                }
+                if (files[0].getAbsolutePath().toLowerCase().endsWith(".m3u") || files[0].getAbsolutePath().toLowerCase().endsWith(".m3u8")) {
+                    M3UReader m3ureader = new M3UReader(files[0]);
+                    // System.out.println("Sup");
+                    if (m3ureader.status == 0) {
+                        
+                        pm.insertPlaylist(m3ureader.playlist);
+                        
+                        // convert ArrayList to array
+                        String[] arr = new String[m3ureader.songs.size()];
+                        for (int a = 0; a < arr.length; a++) {
+                            arr[a] = m3ureader.songs.get(a);
+                        }
+                        
+                        promptAddSongs(m3ureader.playlist, arr);
+                    } else {
+                        System.out.println("MainFrame: m3ureader returns non-zero code.");
+                    }
                 }
             }
         });
@@ -864,7 +885,7 @@ public class MainFrame extends javax.swing.JFrame {
         ArrayList<Integer> irregular_file_idx = new ArrayList<Integer>();
         int irregular_file_name_count = 0;
         for (int a = 0; a < songName.length; a++) {
-            if (!songName[a].toLowerCase().endsWith(".mp3")) {
+            if (!songName[a].toLowerCase().endsWith(".mp3") && !songName[a].toLowerCase().endsWith(".flac")) {
                 irregular_file_idx.add(a);
                 irregular_file_name_count++;
             }
