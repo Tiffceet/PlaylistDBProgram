@@ -9,6 +9,11 @@ To allow user to customise music playlist on their smart phones using computer
 - JDBC 3.27.2.1 (Java Database Connectivity API)
 - filedrop v1.1 by iHarder.net (http://iharder.sourceforge.net/current/java/filedrop/)
 
+## How to build from Apache ant (If you don't have Netbeans IDE)
+`ant compile jar`
+### To run:
+`java -cp "dist\PlaylistDBProgram.jar;lib\filedrop.jar;lib\sqlite-jdbc-3.27.2.1.jar" looz.dreemur.MainFrame`
+
 ## Program Layout: 
 ![Program Layout](https://i.imgur.com/mBU71IT.png)
 1. Menus
