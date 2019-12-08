@@ -60,6 +60,50 @@ public class DBManager {
         }
     }
 
+    // constructor for creating new database straight away at ongoing.db
+    public DBManager(MainFrame mf) {
+        // Defaults
+        status = 0;
+        DB_schema = "CREATE TABLE android_metadata (locale TEXT)\n"
+                + "CREATE TABLE music_playlist (_id INTEGER PRIMARY KEY autoincrement,name TEXT NOT NULL,path TEXT,album_pic TEXT)\n"
+                + "CREATE TABLE sqlite_sequence(name,seq)\n";
+        conn = null;
+
+        // references
+        this.mf = mf;
+        db = new File("ongoing.db");
+        db_path = db.getAbsolutePath();
+        this.src_DB = null;
+        this.src_DB_path = null;
+        
+        createDatabase();
+    }
+
+    public void createDatabase() {        
+        // Create new db in 'ongoing.db'
+        // clean up the old data
+        if (db.exists()) {
+            if(!db.delete())
+            {
+                System.out.println("DBManager() -> createDatabase: Something is using ongoing.db ?");
+            }
+        }
+        db = new File("ongoing.db");
+        String url = "jdbc:sqlite:" + db.getAbsolutePath().replace("\\", "/");
+        try {
+            conn = DriverManager.getConnection(url);
+            String sql = "CREATE TABLE android_metadata (locale TEXT);";
+            String sql2 = "CREATE TABLE music_playlist (_id INTEGER PRIMARY KEY autoincrement,name TEXT NOT NULL,path TEXT,album_pic TEXT);";
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+            stmt.execute(sql2);
+        } catch (SQLException e) {
+            System.out.println("DBManager() -> createDatabase: Something went wrong");
+            System.out.println(e.getMessage());
+        }
+        
+    }
+
     public void connectDatabase(File dbfileToBeConnected) {
         try {
             String url = "jdbc:sqlite:" + dbfileToBeConnected.getAbsolutePath().replace("\\", "/");
@@ -75,6 +119,7 @@ public class DBManager {
     }
 
     // use this only when user tries to save
+    // remember to make sure src_DB_path is defined
     public void overwriteSourceDatabase() throws IOException {
         try {
             conn.close();
@@ -96,47 +141,31 @@ public class DBManager {
         }
 
     }
-    
-    // use this only when user tries to save
-    public void overwriteSourceDatabase(String src_db_path) throws IOException {
-        try {
-            conn.close();
+    // Why was this here ?
+//
+//    // use this only when user tries to save
+//    public void overwriteSourceDatabase(String src_db_path) throws IOException {
+//        try {
+//            conn.close();
+//
+//            // redefine both of them as stated in copyFileUsingStream()
+//            db = new File(db_path);
+//            src_DB = new File(src_db_path);
+//
+//            copyFileUsingStream(db, src_DB);
+//
+//            connectDatabase(db);
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//            JOptionPane.showMessageDialog(null, "Something went really wrong, please check overwriteSourceDatabase()", "Error", JOptionPane.ERROR_MESSAGE);
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//            JOptionPane.showMessageDialog(null, "File Not Found error, pls dont mess with the file when saving.", "Error", JOptionPane.ERROR_MESSAGE);
+//
+//        }
+//
+//    }
 
-            // redefine both of them as stated in copyFileUsingStream()
-            db = new File(db_path);
-            src_DB = new File(src_db_path);
-
-            copyFileUsingStream(db, src_DB);
-
-            connectDatabase(db);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Something went really wrong, please check overwriteSourceDatabase()", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "File Not Found error, pls dont mess with the file when saving.", "Error", JOptionPane.ERROR_MESSAGE);
-
-        }
-
-    }
-
-    /*
-    public void createNewDatabase(String fileName) {
-
-        String url = "jdbc:sqlite:C:/Users/Acer/Desktop/db/" + fileName;
-
-        try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                System.out.println("A new database has been created.");
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-     */
     public void verifyDB() {
         try {
 

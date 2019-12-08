@@ -12,7 +12,7 @@ public class PlaylistManager {
     MainFrame mf;
     DBManager db;
     String defaultPath;
-    ArrayList<String> playlist, filepaths;
+    ArrayList<String> playlist, filepaths; // used to keep playlist and filepaths detected in database, is updating here neccessary after updating database ? 
     int status;
     
     public PlaylistManager(MainFrame mf, DBManager db) {
@@ -312,6 +312,8 @@ public class PlaylistManager {
             String q = "INSERT INTO music_playlist(name) VALUES('" + playlist + "')";
             db.execQuery(q);
             mf.playlist.addElement(playlist);
+            // is this really needed ?
+            this.playlist.add(playlist);
             status = 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());

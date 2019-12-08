@@ -39,39 +39,7 @@ public class MainFrame extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                if (!changesMade) {
-                    System.exit(0);
-                    return;
-                }
-
-                int some_boi_trying_to_close_window = JOptionPane.showConfirmDialog(null,
-                        "Do you wish to save before closing?", "Close Window?",
-                        JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-
-                if (some_boi_trying_to_close_window == JOptionPane.YES_OPTION) {
-                    try {
-                        db.overwriteSourceDatabase();
-                        // JOptionPane.showMessageDialog(null, "Saved.", "Save", JOptionPane.PLAIN_MESSAGE);
-                        System.exit(0);
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                        if (JOptionPane.showOptionDialog(null,
-                                "Save Failed.\nClose anyway?", "Error",
-                                JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
-                                null,
-                                new String[]{"Do not close", "Close Anyway"},
-                                "Do not close") == 1) {
-                            System.exit(0);
-                        } else {
-                            //donothing
-                        }
-
-                    }
-
-                } else if (some_boi_trying_to_close_window == JOptionPane.NO_OPTION) {
-                    System.exit(0);
-                }
+                shutdown();
             }
         });
 
@@ -104,15 +72,15 @@ public class MainFrame extends javax.swing.JFrame {
                     M3UReader m3ureader = new M3UReader(files[0]);
                     // System.out.println("Sup");
                     if (m3ureader.status == 0) {
-                        
+
                         pm.insertPlaylist(m3ureader.playlist);
-                        
+
                         // convert ArrayList to array
                         String[] arr = new String[m3ureader.songs.size()];
                         for (int a = 0; a < arr.length; a++) {
                             arr[a] = m3ureader.songs.get(a);
                         }
-                        
+
                         promptAddSongs(m3ureader.playlist, arr);
                         changesMade = true;
                     } else {
@@ -125,7 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
         // add filedrop listner to Song'sFileName Panel (ScrollPane inherits Panel obviously :3)
         new FileDrop(this.jScrollPane2, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
-                
+
                 System.out.println("PLS DO NOT CRASH THANKS");
 
                 // playlist need to be selected first
@@ -166,6 +134,7 @@ public class MainFrame extends javax.swing.JFrame {
         bar = new javax.swing.JProgressBar();
         MenuBar = new javax.swing.JMenuBar();
         Menu_File = new javax.swing.JMenu();
+        MItem_Create = new javax.swing.JMenuItem();
         MItem_Open = new javax.swing.JMenuItem();
         MItem_Close = new javax.swing.JMenuItem();
         MItem_NewPlaylist = new javax.swing.JMenuItem();
@@ -173,6 +142,8 @@ public class MainFrame extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         MItem_Save = new javax.swing.JMenuItem();
         MItem_SaveAs = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        MItem_Exit = new javax.swing.JMenuItem();
         Menu_Edit = new javax.swing.JMenu();
         MItem_DefaultSongfilepath = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -251,6 +222,14 @@ public class MainFrame extends javax.swing.JFrame {
         Menu_File.setText("File");
         Menu_File.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
+        MItem_Create.setText("Create Database...");
+        MItem_Create.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MItem_CreateActionPerformed(evt);
+            }
+        });
+        Menu_File.add(MItem_Create);
+
         MItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         MItem_Open.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         MItem_Open.setText("Open Database...");
@@ -311,6 +290,16 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         Menu_File.add(MItem_SaveAs);
+        Menu_File.add(jSeparator4);
+
+        MItem_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
+        MItem_Exit.setText("Exit");
+        MItem_Exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MItem_ExitActionPerformed(evt);
+            }
+        });
+        Menu_File.add(MItem_Exit);
 
         MenuBar.add(Menu_File);
 
@@ -478,6 +467,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void MItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_SaveActionPerformed
         try {
+            if(db.src_DB == null || db.src_DB_path == null){
+                MItem_SaveAsActionPerformed(evt);
+                return;
+            }
             db.overwriteSourceDatabase();
             JOptionPane.showMessageDialog(null, "Saved.", "Save", JOptionPane.PLAIN_MESSAGE);
         } catch (IOException e) {
@@ -489,7 +482,28 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_MItem_SaveActionPerformed
 
     private void MItem_SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_SaveAsActionPerformed
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
+        int returnValue = jfc.showSaveDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (jfc.getSelectedFile().exists()) {
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Would You Like to overwrite existing file ? ", "Warning", JOptionPane.YES_NO_OPTION);
+                if (dialogResult != JOptionPane.YES_OPTION) {
+                    return;
+                }
+            }
+            db.src_DB = jfc.getSelectedFile();
+            db.src_DB_path = db.src_DB.getAbsolutePath();
+            try {
+                db.overwriteSourceDatabase();
+            } catch (IOException e) {
+                System.out.println("MItem_SaveAsActionPerformed(): Encountered Error trying to save file");
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "Save Failed", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            changesMade = false;
+        }
         System.out.println("Save As Operated");
     }//GEN-LAST:event_MItem_SaveAsActionPerformed
 
@@ -634,7 +648,7 @@ public class MainFrame extends javax.swing.JFrame {
         int[] idxs = this.LIST_SongFilename.getSelectedIndices();
         changesMade = true;
         if (evt.getKeyCode() == KeyEvent.VK_F2 && this.LIST_SongFilename.isFocusOwner() && idxs.length > 0) {
-            
+
             // if user request rename song(1 at a time only)
             promptRenameSong(String.valueOf(LIST_Playlist.getSelectedValue()), idxs[0]);
         }
@@ -710,6 +724,51 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_MItem_RemoveSongFromPlaylistActionPerformed
 
+    private void MItem_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_CreateActionPerformed
+        if (changesMade && ProgramActivated) {
+            // Ask user if want to save changes
+            int some_boi_trying_to_close_window = JOptionPane.showConfirmDialog(null,
+                    "Do you wish to save changes?", "Save changes?",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (some_boi_trying_to_close_window == JOptionPane.YES_OPTION) {
+                try {
+                    db.overwriteSourceDatabase();
+                    // JOptionPane.showMessageDialog(null, "Saved.", "Save", JOptionPane.PLAIN_MESSAGE);
+                    changesMade = false;
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    if (JOptionPane.showOptionDialog(null,
+                            "Save Failed.\nClose anyway?", "Error",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                            null,
+                            new String[]{"Do not close", "Close Anyway"},
+                            "Do not close") == 1) {
+                        return; // stop function processing as user doesn't want to close 
+                    } else {
+                        //donothing
+                    }
+                }
+            }
+        }
+        // Starts creating a new database here
+        hardReset();
+        db = new DBManager(this);
+
+        // proceed only if database structure is correct
+        if (db.status == 0) {
+            pm = new PlaylistManager(this, db);
+            toggleMenuItem(true);
+            ProgramActivated = true;
+            changesMade = true;
+        }
+    }//GEN-LAST:event_MItem_CreateActionPerformed
+
+    private void MItem_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_ExitActionPerformed
+        shutdown();
+    }//GEN-LAST:event_MItem_ExitActionPerformed
+
     // =========================================================================
     // My Functions
     // =========================================================================
@@ -742,6 +801,43 @@ public class MainFrame extends javax.swing.JFrame {
         db = null;
         pm = null;
         ProgramActivated = false;
+    }
+
+    // Call this function before closing the program
+    void shutdown() {
+        if (!changesMade) {
+            System.exit(0);
+            return;
+        }
+
+        int some_boi_trying_to_close_window = JOptionPane.showConfirmDialog(null,
+                "Do you wish to save before closing?", "Close Window?",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (some_boi_trying_to_close_window == JOptionPane.YES_OPTION) {
+            try {
+                db.overwriteSourceDatabase();
+                // JOptionPane.showMessageDialog(null, "Saved.", "Save", JOptionPane.PLAIN_MESSAGE);
+                System.exit(0);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                if (JOptionPane.showOptionDialog(null,
+                        "Save Failed.\nClose anyway?", "Error",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+                        null,
+                        new String[]{"Do not close", "Close Anyway"},
+                        "Do not close") == 1) {
+                    System.exit(0);
+                } else {
+                    //donothing
+                }
+
+            }
+
+        } else if (some_boi_trying_to_close_window == JOptionPane.NO_OPTION) {
+            System.exit(0);
+        }
     }
 
     void promptNewPlaylist() {
@@ -1182,7 +1278,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> LIST_SongFilename;
     private javax.swing.JMenuItem MItem_AddSongs;
     private javax.swing.JMenuItem MItem_Close;
+    private javax.swing.JMenuItem MItem_Create;
     private javax.swing.JMenuItem MItem_DefaultSongfilepath;
+    private javax.swing.JMenuItem MItem_Exit;
     private javax.swing.JMenuItem MItem_NewPlaylist;
     private javax.swing.JMenuItem MItem_Open;
     private javax.swing.JMenuItem MItem_RemovePlaylist;
@@ -1202,5 +1300,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     // End of variables declaration//GEN-END:variables
 }
