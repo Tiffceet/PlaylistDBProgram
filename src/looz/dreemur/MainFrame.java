@@ -18,6 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
     public DBManager db;
     public PlaylistManager pm;
     private boolean ProgramActivated;
+    private boolean changesMade;
 
     /**
      * Creates new form MainFrame
@@ -32,12 +33,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         // triggers for some event
         ProgramActivated = false;
+        changesMade = false;
 
         // overwrite onclose listener
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                if (!ProgramActivated) {
+                if (!changesMade) {
                     System.exit(0);
                     return;
                 }
@@ -94,6 +96,7 @@ public class MainFrame extends javax.swing.JFrame {
                         }
 
                         promptAddSongs(wpl.playlist, arr);
+                        changesMade = true;
                     }
                     return;
                 }
@@ -111,6 +114,7 @@ public class MainFrame extends javax.swing.JFrame {
                         }
                         
                         promptAddSongs(m3ureader.playlist, arr);
+                        changesMade = true;
                     } else {
                         System.out.println("MainFrame: m3ureader returns non-zero code.");
                     }
@@ -121,6 +125,7 @@ public class MainFrame extends javax.swing.JFrame {
         // add filedrop listner to Song'sFileName Panel (ScrollPane inherits Panel obviously :3)
         new FileDrop(this.jScrollPane2, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
+                
                 System.out.println("PLS DO NOT CRASH THANKS");
 
                 // playlist need to be selected first
@@ -133,7 +138,7 @@ public class MainFrame extends javax.swing.JFrame {
                 for (int a = 0; a < files.length; a++) {
                     songNames[a] = files[a].getName();
                 }
-
+                changesMade = true;
                 promptAddSongs(playlist.get(idxs[0]).toString(), songNames);
             }
         });
@@ -459,6 +464,7 @@ public class MainFrame extends javax.swing.JFrame {
                         this.playlist.addElement(pl);
                     }
                     ProgramActivated = true;
+                    changesMade = true;
                 }
 
             }
@@ -479,6 +485,7 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Save Failed", "Error", JOptionPane.ERROR_MESSAGE);
         }
         System.out.println("Save Operated");
+        changesMade = false;
     }//GEN-LAST:event_MItem_SaveActionPerformed
 
     private void MItem_SaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_SaveAsActionPerformed
@@ -547,10 +554,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         int[] idxs = this.LIST_Playlist.getSelectedIndices();
         if (evt.getKeyCode() == KeyEvent.VK_F2 && this.LIST_Playlist.isFocusOwner() && idxs.length > 0) {
+            changesMade = true;
             this.promptRenamePlaylist(idxs[0]);
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_DELETE && this.LIST_Playlist.isFocusOwner() && idxs.length > 0) {
+            changesMade = true;
             if (idxs.length > 1) {
                 promptBatchDeletePlaylist(idxs);
             } else {
@@ -563,6 +572,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_LIST_PlaylistKeyPressed
 
     private void MItem_RenamePlaylistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_RenamePlaylistActionPerformed
+        changesMade = true;
         int[] idxs = this.LIST_Playlist.getSelectedIndices();
         if (idxs.length == 0) {
             JOptionPane.showMessageDialog(null, "No playlist is being selected", "Error", JOptionPane.ERROR_MESSAGE);
@@ -572,6 +582,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_MItem_RenamePlaylistActionPerformed
 
     private void MItem_RemovePlaylistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_RemovePlaylistActionPerformed
+        changesMade = true;
         int[] idxs = this.LIST_Playlist.getSelectedIndices();
         if (idxs.length == 0) {
             JOptionPane.showMessageDialog(null, "No playlist is being selected", "Error", JOptionPane.ERROR_MESSAGE);
@@ -621,7 +632,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void LIST_SongFilenameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LIST_SongFilenameKeyPressed
         int[] idxs = this.LIST_SongFilename.getSelectedIndices();
+        changesMade = true;
         if (evt.getKeyCode() == KeyEvent.VK_F2 && this.LIST_SongFilename.isFocusOwner() && idxs.length > 0) {
+            
             // if user request rename song(1 at a time only)
             promptRenameSong(String.valueOf(LIST_Playlist.getSelectedValue()), idxs[0]);
         }
@@ -644,6 +657,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void LIST_SongFilenameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LIST_SongFilenameMouseClicked
         // checks for doubleclick
         if (evt.getClickCount() == 2) {
+            changesMade = true;
             int idx = LIST_SongFilename.getSelectedIndex();
             if (idx == -1) {
                 return;
@@ -664,6 +678,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_MItem_CloseActionPerformed
 
     private void BTN_ChangeSongFilePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ChangeSongFilePathActionPerformed
+        changesMade = true;
         int _PList_idx = LIST_Playlist.getSelectedIndex();
         int _Song_idx = LIST_SongFilename.getSelectedIndex();
         if (_PList_idx == -1 || _Song_idx == -1) {
@@ -678,6 +693,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_MItem_RenameSongActionPerformed
 
     private void MItem_RemoveSongFromPlaylistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_RemoveSongFromPlaylistActionPerformed
+        changesMade = true;
         int[] idxs = this.LIST_SongFilename.getSelectedIndices();
 
         // user requests delete song from playlist
@@ -729,7 +745,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptNewPlaylist() {
-
+        changesMade = true;
         // Custom Components to be added to OptionPane
         JLabel label1 = new JLabel("New Playlist's Name?");
         label1.setFont(DEFAULTFONT);
@@ -755,6 +771,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptRenamePlaylist(int idx) {
+        changesMade = true;
         // idx refers to which index of shown playlist on screen to be renamed
         // Prompt renaming dialog
         JTextField jtf = new JTextField();
@@ -770,6 +787,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptDeletePlaylist(int idx) {
+        changesMade = true;
         String playlistName = playlist.get(idx).toString();
         int dialogResult = JOptionPane.showConfirmDialog(null, "Do you wish to erase this playlist ?\n\n(" + playlistName + ")", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
@@ -778,6 +796,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptBatchDeletePlaylist(int[] idxs) {
+        changesMade = true;
         String playlistNames = "";
         for (int idx : idxs) {
             playlistNames = playlistNames + "(" + playlist.get(idx).toString() + ")\n";
@@ -789,6 +808,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptRenameSong(String playlist, int idx) {
+        changesMade = true;
         // Convert pathlist(ArrayList) -> String Array
         // Reason: JComboBox dont accept ArrayList >:(
         Object[] path_list = pm.filepaths.toArray();
@@ -855,10 +875,11 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptBatchDeleteSongs() {
+        changesMade = true;
     }
 
     void promptAddSongs(String playlist, String[] songName) {
-
+        changesMade = true;
         if (pm.playlist.size() == 0) {
             JOptionPane.showMessageDialog(null, "No playlist is selected,\nPlease use CTRL + N to add playlist", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -992,6 +1013,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptSongPaths() {
+        changesMade = true;
         // Convert pathlist(ArrayList) -> String Array
         // Reason: JComboBox dont accept ArrayList >:(
         Object[] path_list = pm.filepaths.toArray();
@@ -1036,6 +1058,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptAddPath() {
+        changesMade = true;
         String[] s2 = {"Add", "Cancel"};
         JTextField _TXT_newPathName = new JTextField();
         _TXT_newPathName.setFont(UTF8_FONT);
@@ -1058,6 +1081,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void promptEditPath(String _oldPath) {
+        changesMade = true;
         // setting up dialog
         String[] s3 = {"Update", "Cancel"};
         JLabel _LAB_oldPath = new JLabel("Old Path: " + _oldPath + "\n");
