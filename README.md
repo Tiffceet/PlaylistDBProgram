@@ -10,9 +10,10 @@ To allow user to customise music playlist on their smart phones using computer
 - filedrop v1.1 by iHarder.net (http://iharder.sourceforge.net/current/java/filedrop/)
 
 ## How to build from Apache ant (If you don't have Netbeans IDE)
-`ant compile jar`
-### To run:
-`java -cp "dist\PlaylistDBProgram.jar;lib\filedrop.jar;lib\sqlite-jdbc-3.27.2.1.jar" looz.dreemur.MainFrame`
+In the working directory, do `ant clean jar`
+
+And the deployed JAR file will be in the `dist` folder.
+
 
 ## Program Layout: 
 ![Program Layout](https://i.imgur.com/mBU71IT.png)
