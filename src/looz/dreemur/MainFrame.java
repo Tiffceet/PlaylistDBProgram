@@ -45,11 +45,9 @@ public class MainFrame extends javax.swing.JFrame {
         // add filedrop listner to Playlist Panel (ScrollPane inherits Panel obviously :3)
         new FileDrop(this.jScrollPane1, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
-                // System.out.println("PLS DO NOT CRASH THANKS");
-
                 // When theres no database loaded into program, consider giving user a error msg?
                 if (!ProgramActivated) {
-                    return;
+                    JOptionPane.showMessageDialog(null, "No database is loaded. Please create/open a database", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 if (files[0].getAbsolutePath().toLowerCase().endsWith(".wpl")) {
                     WPLReader wpl = new WPLReader(files[0]);
