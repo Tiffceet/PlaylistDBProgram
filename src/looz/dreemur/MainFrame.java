@@ -1,5 +1,6 @@
 package looz.dreemur;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
@@ -10,8 +11,7 @@ import net.iharder.dnd.FileDrop;
 
 public class MainFrame extends javax.swing.JFrame {
 
-    private final Color BACKGROUND = new Color(60, 63, 65);
-    private final Color TEXTFOREGROUND = new Color(255, 255, 255);
+    private final Color TEXTFOREGROUND = new Color(0,0,0);
     private final Font DEFAULTFONT = new java.awt.Font("Segoe UI", 0, 12);
     private final Font UTF8_FONT = new java.awt.Font("MS Gothic", 0, 12);
     public DefaultListModel playlist, songFileName;
@@ -29,7 +29,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         initComponents();
         this.setLocationRelativeTo(null);
-        this.getContentPane().setBackground(BACKGROUND);
 
         // triggers for some event
         ProgramActivated = false;
@@ -122,12 +121,16 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        MainPanel = new javax.swing.JPanel();
+        SidePanel = new javax.swing.JPanel();
         LABEL_Playlist = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         LIST_Playlist = new javax.swing.JList<>();
+        CenterPanel = new javax.swing.JPanel();
         LABEL_SongFilename = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         LIST_SongFilename = new javax.swing.JList<>();
+        BottomPanel = new javax.swing.JPanel();
         LABEL_SongFilePath = new javax.swing.JLabel();
         TEXT_SongFilePath = new javax.swing.JTextField();
         BTN_ChangeSongFilePath = new javax.swing.JButton();
@@ -157,9 +160,15 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Playlist Converter");
 
-        LABEL_Playlist.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        MainPanel.setLayout(new java.awt.BorderLayout(10, 10));
+
+        SidePanel.setLayout(new java.awt.BorderLayout(10, 10));
+
         LABEL_Playlist.setForeground(TEXTFOREGROUND);
         LABEL_Playlist.setText("Playlist");
+        SidePanel.add(LABEL_Playlist, java.awt.BorderLayout.PAGE_START);
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(150, 130));
 
         LIST_Playlist.setFont(new java.awt.Font("MS Gothic", 0, 12)); // NOI18N
         LIST_Playlist.setModel(playlist);
@@ -180,9 +189,15 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(LIST_Playlist);
 
-        LABEL_SongFilename.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        SidePanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        MainPanel.add(SidePanel, java.awt.BorderLayout.WEST);
+
+        CenterPanel.setLayout(new java.awt.BorderLayout(10, 10));
+
         LABEL_SongFilename.setForeground(TEXTFOREGROUND);
         LABEL_SongFilename.setText("Song's Filename");
+        CenterPanel.add(LABEL_SongFilename, java.awt.BorderLayout.PAGE_START);
 
         LIST_SongFilename.setFont(new java.awt.Font("MS Gothic", 0, 12)); // NOI18N
         LIST_SongFilename.setModel(songFileName);
@@ -203,12 +218,19 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(LIST_SongFilename);
 
-        LABEL_SongFilePath.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        CenterPanel.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        MainPanel.add(CenterPanel, java.awt.BorderLayout.CENTER);
+
+        BottomPanel.setLayout(new java.awt.BorderLayout(10, 10));
+
         LABEL_SongFilePath.setForeground(TEXTFOREGROUND);
         LABEL_SongFilePath.setText("Selected song's filepath: ");
+        BottomPanel.add(LABEL_SongFilePath, java.awt.BorderLayout.WEST);
 
         TEXT_SongFilePath.setEditable(false);
         TEXT_SongFilePath.setFont(new java.awt.Font("MS Gothic", 0, 12)); // NOI18N
+        BottomPanel.add(TEXT_SongFilePath, java.awt.BorderLayout.CENTER);
 
         BTN_ChangeSongFilePath.setText("Change");
         BTN_ChangeSongFilePath.addActionListener(new java.awt.event.ActionListener() {
@@ -216,11 +238,14 @@ public class MainFrame extends javax.swing.JFrame {
                 BTN_ChangeSongFilePathActionPerformed(evt);
             }
         });
+        BottomPanel.add(BTN_ChangeSongFilePath, java.awt.BorderLayout.EAST);
+        BottomPanel.add(bar, java.awt.BorderLayout.SOUTH);
+
+        MainPanel.add(BottomPanel, java.awt.BorderLayout.SOUTH);
 
         MenuBar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         Menu_File.setText("File");
-        Menu_File.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
         MItem_Create.setText("Create Database...");
         MItem_Create.addActionListener(new java.awt.event.ActionListener() {
@@ -230,8 +255,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         Menu_File.add(MItem_Create);
 
-        MItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        MItem_Open.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        MItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         MItem_Open.setText("Open Database...");
         MItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,8 +274,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         Menu_File.add(MItem_Close);
 
-        MItem_NewPlaylist.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        MItem_NewPlaylist.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        MItem_NewPlaylist.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         MItem_NewPlaylist.setText("New Playlist");
         MItem_NewPlaylist.setEnabled(false);
         MItem_NewPlaylist.addActionListener(new java.awt.event.ActionListener() {
@@ -261,7 +284,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         Menu_File.add(MItem_NewPlaylist);
 
-        MItem_AddSongs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        MItem_AddSongs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         MItem_AddSongs.setFont(DEFAULTFONT);
         MItem_AddSongs.setText("Add song(s)");
         MItem_AddSongs.setBorderPainted(false);
@@ -269,8 +292,7 @@ public class MainFrame extends javax.swing.JFrame {
         Menu_File.add(MItem_AddSongs);
         Menu_File.add(jSeparator1);
 
-        MItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        MItem_Save.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        MItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         MItem_Save.setText("Save");
         MItem_Save.setEnabled(false);
         MItem_Save.addActionListener(new java.awt.event.ActionListener() {
@@ -280,8 +302,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         Menu_File.add(MItem_Save);
 
-        MItem_SaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        MItem_SaveAs.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        MItem_SaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         MItem_SaveAs.setText("Save As...");
         MItem_SaveAs.setEnabled(false);
         MItem_SaveAs.addActionListener(new java.awt.event.ActionListener() {
@@ -292,7 +313,7 @@ public class MainFrame extends javax.swing.JFrame {
         Menu_File.add(MItem_SaveAs);
         Menu_File.add(jSeparator4);
 
-        MItem_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
+        MItem_Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         MItem_Exit.setText("Exit");
         MItem_Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,10 +325,8 @@ public class MainFrame extends javax.swing.JFrame {
         MenuBar.add(Menu_File);
 
         Menu_Edit.setText("Edit");
-        Menu_Edit.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
-        MItem_DefaultSongfilepath.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        MItem_DefaultSongfilepath.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        MItem_DefaultSongfilepath.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         MItem_DefaultSongfilepath.setText("Song Paths...");
         MItem_DefaultSongfilepath.setEnabled(false);
         MItem_DefaultSongfilepath.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +381,6 @@ public class MainFrame extends javax.swing.JFrame {
         MenuBar.add(Menu_Edit);
 
         Menu_Help.setText("?");
-        Menu_Help.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         MenuBar.add(Menu_Help);
 
         setJMenuBar(MenuBar);
@@ -373,44 +391,14 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LABEL_Playlist)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(LABEL_SongFilename)
-                                .addGap(0, 540, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(LABEL_SongFilePath)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TEXT_SongFilePath)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BTN_ChangeSongFilePath)))
+                .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(LABEL_Playlist)
-                    .addComponent(LABEL_SongFilename))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BTN_ChangeSongFilePath)
-                    .addComponent(TEXT_SongFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LABEL_SongFilePath))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -467,7 +455,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void MItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MItem_SaveActionPerformed
         try {
-            if(db.src_DB == null || db.src_DB_path == null){
+            if (db.src_DB == null || db.src_DB_path == null) {
                 MItem_SaveAsActionPerformed(evt);
                 return;
             }
@@ -1239,21 +1227,7 @@ public class MainFrame extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            javax.swing.UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -1271,6 +1245,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTN_ChangeSongFilePath;
+    private javax.swing.JPanel BottomPanel;
+    private javax.swing.JPanel CenterPanel;
     private javax.swing.JLabel LABEL_Playlist;
     private javax.swing.JLabel LABEL_SongFilePath;
     private javax.swing.JLabel LABEL_SongFilename;
@@ -1289,10 +1265,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem MItem_RenameSong;
     private javax.swing.JMenuItem MItem_Save;
     private javax.swing.JMenuItem MItem_SaveAs;
+    private javax.swing.JPanel MainPanel;
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenu Menu_Edit;
     private javax.swing.JMenu Menu_File;
     private javax.swing.JMenu Menu_Help;
+    private javax.swing.JPanel SidePanel;
     public javax.swing.JTextField TEXT_SongFilePath;
     private javax.swing.JProgressBar bar;
     private javax.swing.JScrollPane jScrollPane1;
