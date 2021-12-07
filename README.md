@@ -3,11 +3,13 @@
 To allow user to customise music playlist on their smart phones using computer
 
 ## Language Used
-- Java 8 (I used Netbeans IDE if you are wondering)
+- Java 8
+- IDE: Netbeans IDE 12.6
 
 ## Library Used
 - JDBC 3.27.2.1 (Java Database Connectivity API)
 - filedrop v1.1 by iHarder.net (http://iharder.sourceforge.net/current/java/filedrop/)
+- FlatLAF 1.6.4 (https://search.maven.org/artifact/com.formdev/flatlaf/1.6.4/jar)
 
 ## How to build from Apache ant (If you don't have Netbeans IDE)
 In the working directory, do `ant clean jar`
