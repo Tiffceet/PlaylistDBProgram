@@ -8,6 +8,8 @@ import looz.dreemur.DTO.Song;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -548,8 +550,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         // if any playlist failed to obtain songs from database properly, close database
         // if (pm.status == 1) {
-        //     hardReset();
-        //     return;
+        // hardReset();
+        // return;
         // }
         for (String str : songs) {
             this.songFileName.addElement(str);
@@ -637,7 +639,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         // get filepath to be shown
         int playlistIdx = LIST_Playlist.getSelectedIndex();
-        String fullpath = pm.getPlaylists().get(playlistIdx).getSongs().get(LIST_SongFilename.getSelectedIndex()).getFilepath();
+        String fullpath = pm.getPlaylists().get(playlistIdx).getSongs().get(LIST_SongFilename.getSelectedIndex())
+                .getFilepath();
         TEXT_SongFilePath.setText(fullpath);
 
         // Code where specifically need to know whether idxs is "more than 1" or
@@ -1114,23 +1117,8 @@ public class MainFrame extends javax.swing.JFrame {
         if (result == 0) {
             // user decided to add songs
             String path = String.valueOf(_COM_BOX_paths.getSelectedItem());
-
-            bar.setValue(0);
-            bar.setMaximum(songName.length);
-
-            int a = 0;
             Playlist pl = pm.getPlaylistByName(playlist);
-            while (a < songName.length) {
-                pl.addSong(new Song(path + songName[a]));
-                updateProgressBar(a);
-                a++;
-            }
-            updateProgressBar(a);
-            a = 0;
-
-            JOptionPane.showMessageDialog(null, "Songs added.", "", JOptionPane.INFORMATION_MESSAGE);
-            updateProgressBar(a);
-            refreshView();
+            new AddSongsTask(pl, path, songName).execute();
         }
 
     }
@@ -1139,11 +1127,11 @@ public class MainFrame extends javax.swing.JFrame {
         ArrayList<Playlist> playlists = this.pm.getPlaylists();
         DefaultListModel playlistTable = (DefaultListModel) LIST_Playlist.getModel();
         playlistTable.removeAllElements();
-        for(int i = 0; i < playlists.size(); i++) {
+        for (int i = 0; i < playlists.size(); i++) {
             playlistTable.addElement(playlists.get(i).getPlaylistName());
             // ArrayList<Song> songs = playlists.get(i).getSongs();
             // for(int j = 0; j < songs.size(); j++) {
-                
+
             // }
         }
     }
@@ -1263,11 +1251,48 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    void updateProgressBar(int val) {
-        bar.setValue(val);
-        bar.update(bar.getGraphics());
-        jScrollPane2.update(jScrollPane2.getGraphics());
-        LIST_SongFilename.update(LIST_SongFilename.getGraphics());
+    class AddSongsTask extends SwingWorker<Void, Void> {
+
+        Playlist pl;
+        String path;
+        String[] songnames;
+
+        AddSongsTask(Playlist pl, String path, String[] songnames) {
+            this.pl = pl;
+            this.path = path;
+            this.songnames = songnames;
+            bar.setValue(0);
+            bar.setMaximum(100);
+        }
+
+        /*
+         * Main task. Executed in background thread.
+         */
+        @Override
+        public Void doInBackground() {
+            int a = 0;
+            while (a < songnames.length) {
+                pl.addSong(new Song(path + songnames[a]));
+                updateProgressBar((int) Math.round(a / songnames.length * 100.0));
+                a++;
+            }
+            updateProgressBar(a);
+            return null;
+        }
+
+        void updateProgressBar(int val) {
+            bar.setValue(val);
+        }
+
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+            JOptionPane.showMessageDialog(null, "Songs added.", "", JOptionPane.INFORMATION_MESSAGE);
+            updateProgressBar(0);
+            refreshView();
+        }
     }
 
     public String getPath(String absolutePath) {
