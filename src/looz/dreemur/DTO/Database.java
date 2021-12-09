@@ -26,6 +26,10 @@ public class Database {
         this.playlists.add(newPlaylist);
     }
 
+    public ArrayList<Playlist> getPlaylists() {
+        return this.playlists;
+    }
+
     public Playlist getPlaylistByName(String playlistName) throws RuntimeException {
         for (int i = 0; i < this.playlists.size(); i++) {
             Playlist pl = this.playlists.get(i);
@@ -34,6 +38,14 @@ public class Database {
             }
         }
         throw new RuntimeException("Playlist with name " + playlistName + " not found.");
+    }
+
+    public ArrayList<String> getPlaylistNames() {
+        ArrayList<String> plNames = new ArrayList<String>();
+        for(int i = 0; i < this.playlists.size(); i++) {
+            plNames.add(this.playlists.get(i).getPlaylistName());
+        }
+        return plNames;
     }
 
     public void addFilepath(String filepath) {
