@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.FutureTask;
+
 import javax.swing.filechooser.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -634,7 +636,9 @@ public class MainFrame extends javax.swing.JFrame {
         LIST_SongFilename.ensureIndexIsVisible(idxs[0]);
 
         // get filepath to be shown
-        TEXT_SongFilePath.setText(pm.pathOf(LIST_Playlist.getSelectedValue(), LIST_SongFilename.getSelectedValue()));
+        int playlistIdx = LIST_Playlist.getSelectedIndex();
+        String fullpath = pm.getPlaylists().get(playlistIdx).getSongs().get(LIST_SongFilename.getSelectedIndex()).getFilepath();
+        TEXT_SongFilePath.setText(fullpath);
 
         // Code where specifically need to know whether idxs is "more than 1" or
         // "1-only"
@@ -1115,8 +1119,9 @@ public class MainFrame extends javax.swing.JFrame {
             bar.setMaximum(songName.length);
 
             int a = 0;
+            Playlist pl = pm.getPlaylistByName(playlist);
             while (a < songName.length) {
-                pm.insertSong(playlist, path + songName[a]);
+                pl.addSong(new Song(path + songName[a]));
                 updateProgressBar(a);
                 a++;
             }
@@ -1133,6 +1138,7 @@ public class MainFrame extends javax.swing.JFrame {
     void refreshView() {
         ArrayList<Playlist> playlists = this.pm.getPlaylists();
         DefaultListModel playlistTable = (DefaultListModel) LIST_Playlist.getModel();
+        playlistTable.removeAllElements();
         for(int i = 0; i < playlists.size(); i++) {
             playlistTable.addElement(playlists.get(i).getPlaylistName());
             // ArrayList<Song> songs = playlists.get(i).getSongs();
