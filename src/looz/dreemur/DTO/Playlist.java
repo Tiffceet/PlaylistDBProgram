@@ -23,6 +23,10 @@ public class Playlist {
         this.playlistName = playlistName;
     }
 
+    public ArrayList<Song> getSongs() {
+        return this.songs;
+    }
+
     public String getPlaylistName() {
         return this.playlistName;
     }
