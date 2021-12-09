@@ -1,3 +1,5 @@
+package looz.dreemur.parser;
+
 import javax.swing.JOptionPane;
 
 import looz.dreemur.DTO.Playlist;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 
 public class MobileV5BackupParser {
     // obtain playlist from database
-    public ArrayList<Playlist> getPlaylist(String dbPath, String dbName) {
+    public static ArrayList<Playlist> getPlaylist(String dbPath, String dbName) {
         ArrayList<Playlist> playlists = new ArrayList<Playlist>();
         DBManager db = new DBManager(dbPath, dbName);
         String query = "SELECT DISTINCT name FROM music_playlist";
@@ -34,9 +36,9 @@ public class MobileV5BackupParser {
     }
 
     // get all filepaths in database
-    public ArrayList<String> getFilePaths(String dbPath, String dbName) {
+    public static ArrayList<String> getFilePaths(String dbPath, String dbName) {
         ArrayList<String> filepaths = new ArrayList<String>();
-
+        DBManager db = new DBManager(dbPath, dbName);
         String query = "SELECT DISTINCT path FROM music_playlist";
         try {
             Pair<Connection, ResultSet> result = db.resultQuery(query);
