@@ -30,6 +30,7 @@ public class MainFrame extends javax.swing.JFrame {
     public Database pm;
     private boolean ProgramActivated;
     private boolean changesMade;
+    private boolean playlistIsDeleting;
 
     /**
      * Creates new form MainFrame
@@ -44,6 +45,7 @@ public class MainFrame extends javax.swing.JFrame {
         // triggers for some event
         ProgramActivated = false;
         changesMade = false;
+        playlistIsDeleting = false;
 
         // overwrite onclose listener
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -522,7 +524,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         // prevent multiple valueChanged() event being fired as my listModel is always
         // changing
-        if (evt.getValueIsAdjusting()) {
+        if (evt.getValueIsAdjusting() || playlistIsDeleting) {
             return;
         }
 
@@ -674,7 +676,7 @@ public class MainFrame extends javax.swing.JFrame {
                 pm.removeSong(LIST_Playlist.getSelectedValue(), idxs[0]);
             }
 
-            for (int i = 0; i < idxs.length; i++) {
+            for (int i = idxs.length - 1; i >= 0; i--) {
                 this.songFileName.remove(idxs[i]);
             }
 
@@ -924,9 +926,11 @@ public class MainFrame extends javax.swing.JFrame {
                 "Do you wish to erase these playlist ?\n\n" + playlistNames, "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             pm.batchRemovePlaylist(idxs);
-            for (int i = 0; i < idxs.length; i++) {
+            playlistIsDeleting = true;
+            for (int i = idxs.length - 1; i >= 0; i--) {
                 this.playlist.remove(idxs[i]);
             }
+            playlistIsDeleting = false;
         }
     }
 

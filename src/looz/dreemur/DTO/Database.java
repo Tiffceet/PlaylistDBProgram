@@ -89,7 +89,7 @@ public class Database {
 
     public void batchRemoveSong(String playlist, int[] idxs) {
         ArrayList<Song> songs = this.getPlaylistByName(playlist).getSongs();
-        for (int i = 0; i < idxs.length; i++) {
+        for (int i = idxs.length - 1; i >= 0; i--) {
             songs.remove(idxs[i]);
         }
     }
@@ -108,7 +108,7 @@ public class Database {
     }
 
     public void batchRemovePlaylist(int idxs[]) {
-        for (int i = 0; i < idxs.length; i++) {
+        for (int i = idxs.length - 1; i >= 0; i--) {
             this.playlists.remove(idxs[i]);
         }
     }
