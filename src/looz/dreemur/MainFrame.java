@@ -674,9 +674,15 @@ public class MainFrame extends javax.swing.JFrame {
                 pm.removeSong(LIST_Playlist.getSelectedValue(), idxs[0]);
             }
 
+            for(int i = 0; i < idxs.length; i++) {
+                this.songFileName.remove(idxs[i]);
+            }
+
             // make sure when something is deleted, it re-selects the nearest index
             LIST_SongFilename.setSelectedIndex((idxs[0] <= songFileName.getSize() - 1) ? idxs[0] : -1);
         }
+
+        
     }// GEN-LAST:event_LIST_SongFilenameKeyPressed
 
     private void LIST_SongFilenameMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_LIST_SongFilenameMouseClicked
