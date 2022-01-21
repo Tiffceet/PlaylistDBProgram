@@ -674,7 +674,7 @@ public class MainFrame extends javax.swing.JFrame {
                 pm.removeSong(LIST_Playlist.getSelectedValue(), idxs[0]);
             }
 
-            for(int i = 0; i < idxs.length; i++) {
+            for (int i = 0; i < idxs.length; i++) {
                 this.songFileName.remove(idxs[i]);
             }
 
@@ -682,7 +682,6 @@ public class MainFrame extends javax.swing.JFrame {
             LIST_SongFilename.setSelectedIndex((idxs[0] <= songFileName.getSize() - 1) ? idxs[0] : -1);
         }
 
-        
     }// GEN-LAST:event_LIST_SongFilenameKeyPressed
 
     private void LIST_SongFilenameMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_LIST_SongFilenameMouseClicked
@@ -900,6 +899,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (result == 0) {
             String newName = jtf.getText().trim();
             pm.renamePlaylist(idx, newName);
+            this.playlist.set(idx, newName);
         }
     }
 
@@ -910,6 +910,7 @@ public class MainFrame extends javax.swing.JFrame {
                 "Do you wish to erase this playlist ?\n\n(" + playlistName + ")", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             pm.removePlaylist(idx);
+            this.playlist.remove(idx);
         }
     }
 
@@ -923,6 +924,9 @@ public class MainFrame extends javax.swing.JFrame {
                 "Do you wish to erase these playlist ?\n\n" + playlistNames, "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             pm.batchRemovePlaylist(idxs);
+            for (int i = 0; i < idxs.length; i++) {
+                this.playlist.remove(idxs[i]);
+            }
         }
     }
 
@@ -1020,6 +1024,14 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         // Create new playlist
+        while (true) {
+            try {
+                pm.getPlaylistByName(playlist);
+                playlist = playlist + " new";
+            } catch (RuntimeException e) {
+                break;
+            }
+        }
         Playlist pl = new Playlist(playlist);
         pm.addPlaylist(pl);
 
