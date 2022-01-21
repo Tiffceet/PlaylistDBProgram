@@ -66,7 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
                 if (files[0].getAbsolutePath().toLowerCase().endsWith(".wpl")) {
                     WPLReader wpl = new WPLReader(files[0]);
                     if (wpl.status == 0) {
-                        pm.insertPlaylist(wpl.playlist);
+                        // pm.insertPlaylist(wpl.playlist);
 
                         // convert ArrayList to array as always
                         String[] arr = new String[wpl.songs.size()];
@@ -85,7 +85,7 @@ public class MainFrame extends javax.swing.JFrame {
                     // System.out.println("Sup");
                     if (m3ureader.status == 0) {
 
-                        pm.insertPlaylist(m3ureader.playlist);
+                        // pm.insertPlaylist(m3ureader.playlist);
 
                         // convert ArrayList to array
                         String[] arr = new String[m3ureader.songs.size()];
@@ -998,17 +998,21 @@ public class MainFrame extends javax.swing.JFrame {
 
     void promptAddSongs(String playlist, String[] songName) {
         changesMade = true;
-        if (pm.getPlaylistNames().size() == 0) {
-            JOptionPane.showMessageDialog(null, "No playlist is selected,\nPlease use CTRL + N to add playlist",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // if (pm.getPlaylistNames().size() == 0) {
+        //     JOptionPane.showMessageDialog(null, "No playlist is selected,\nPlease use CTRL + N to add playlist",
+        //             "Error", JOptionPane.ERROR_MESSAGE);
+        //     return;
+        // }
 
         if (pm.getFilePaths().size() == 0) {
             JOptionPane.showMessageDialog(null, "No path is defined,\nPlease use CTRL + SHIFT + P to add path", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        // Create new playlist
+        Playlist pl = new Playlist(playlist);
+        pm.addPlaylist(pl);
 
         int amt = songName.length;
 
@@ -1117,7 +1121,6 @@ public class MainFrame extends javax.swing.JFrame {
         if (result == 0) {
             // user decided to add songs
             String path = String.valueOf(_COM_BOX_paths.getSelectedItem());
-            Playlist pl = pm.getPlaylistByName(playlist);
             new AddSongsTask(pl, path, songName).execute();
         }
 
