@@ -1,15 +1,13 @@
 package looz.dreemur.parser;
 
-import javax.swing.JOptionPane;
-
-import looz.dreemur.DTO.Playlist;
-import looz.dreemur.generic.DBManager;
-import looz.dreemur.generic.Pair;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import looz.dreemur.DTO.Playlist;
+import looz.dreemur.generic.DBManager;
+import looz.dreemur.generic.Pair;
 
 public class MobileV5BackupParser {
     // obtain playlist from database

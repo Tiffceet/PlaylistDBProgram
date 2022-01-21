@@ -1,23 +1,15 @@
 package looz.dreemur;
 
 import com.formdev.flatlaf.FlatLightLaf;
-
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.*;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.filechooser.*;
 import looz.dreemur.DTO.Database;
 import looz.dreemur.DTO.Playlist;
 import looz.dreemur.DTO.Song;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-
-import javax.swing.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.concurrent.FutureTask;
-
-import javax.swing.filechooser.*;
-import javax.swing.table.DefaultTableModel;
-
 import net.iharder.dnd.FileDrop;
 
 public class MainFrame extends javax.swing.JFrame {
