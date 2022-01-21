@@ -26,7 +26,6 @@ public class MainFrame extends javax.swing.JFrame {
     private final Font DEFAULTFONT = new java.awt.Font("Segoe UI", 0, 12);
     private final Font UTF8_FONT = new java.awt.Font("MS Gothic", 0, 12);
     public DefaultListModel playlist, songFileName;
-    public DBManager db;
     public Database pm;
     private boolean ProgramActivated;
     private boolean changesMade;
@@ -446,24 +445,24 @@ public class MainFrame extends javax.swing.JFrame {
                 return;
             }
 
-            // reads DB for further queries
-            db = new DBManager(this, selectedFile);
-
-            // proceed only if database structure is correct
-            if (db.status == 0) {
-
-                ////// more code
-                pm = new Database();
-
-                // proceed only if database's data is not corrupted
-                toggleMenuItem(true);
-                for (String pl : pm.getPlaylistNames()) {
-                    this.playlist.addElement(pl);
-                }
-                ProgramActivated = true;
-                changesMade = true;
-
-            }
+//            // reads DB for further queries
+//            db = new DBManager(this, selectedFile);
+//
+//            // proceed only if database structure is correct
+//            if (db.status == 0) {
+//
+//                ////// more code
+//                pm = new Database();
+//
+//                // proceed only if database's data is not corrupted
+//                toggleMenuItem(true);
+//                for (String pl : pm.getPlaylistNames()) {
+//                    this.playlist.addElement(pl);
+//                }
+//                ProgramActivated = true;
+//                changesMade = true;
+//
+//            }
         } else {
             System.out.println("No File Selected");
             JOptionPane.showMessageDialog(this, "No file is selected");
@@ -473,46 +472,46 @@ public class MainFrame extends javax.swing.JFrame {
     }// GEN-LAST:event_MItem_OpenActionPerformed
 
     private void MItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_SaveActionPerformed
-        try {
-            if (db.src_DB == null || db.src_DB_path == null) {
-                MItem_SaveAsActionPerformed(evt);
-                return;
-            }
-            db.overwriteSourceDatabase();
-            JOptionPane.showMessageDialog(null, "Saved.", "Save", JOptionPane.PLAIN_MESSAGE);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Save Failed", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        System.out.println("Save Operated");
-        changesMade = false;
+//        try {
+//            if (db.src_DB == null || db.src_DB_path == null) {
+//                MItem_SaveAsActionPerformed(evt);
+//                return;
+//            }
+//            db.overwriteSourceDatabase();
+//            JOptionPane.showMessageDialog(null, "Saved.", "Save", JOptionPane.PLAIN_MESSAGE);
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//            JOptionPane.showMessageDialog(null, "Save Failed", "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//        System.out.println("Save Operated");
+//        changesMade = false;
     }// GEN-LAST:event_MItem_SaveActionPerformed
 
     private void MItem_SaveAsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_SaveAsActionPerformed
-        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-
-        int returnValue = jfc.showSaveDialog(null);
-
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if (jfc.getSelectedFile().exists()) {
-                int dialogResult = JOptionPane.showConfirmDialog(null, "Would You Like to overwrite existing file ? ",
-                        "Warning", JOptionPane.YES_NO_OPTION);
-                if (dialogResult != JOptionPane.YES_OPTION) {
-                    return;
-                }
-            }
-            db.src_DB = jfc.getSelectedFile();
-            db.src_DB_path = db.src_DB.getAbsolutePath();
-            try {
-                db.overwriteSourceDatabase();
-            } catch (IOException e) {
-                System.out.println("MItem_SaveAsActionPerformed(): Encountered Error trying to save file");
-                System.out.println(e.getMessage());
-                JOptionPane.showMessageDialog(null, "Save Failed", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            changesMade = false;
-        }
-        System.out.println("Save As Operated");
+//        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+//
+//        int returnValue = jfc.showSaveDialog(null);
+//
+//        if (returnValue == JFileChooser.APPROVE_OPTION) {
+//            if (jfc.getSelectedFile().exists()) {
+//                int dialogResult = JOptionPane.showConfirmDialog(null, "Would You Like to overwrite existing file ? ",
+//                        "Warning", JOptionPane.YES_NO_OPTION);
+//                if (dialogResult != JOptionPane.YES_OPTION) {
+//                    return;
+//                }
+//            }
+//            db.src_DB = jfc.getSelectedFile();
+//            db.src_DB_path = db.src_DB.getAbsolutePath();
+//            try {
+//                db.overwriteSourceDatabase();
+//            } catch (IOException e) {
+//                System.out.println("MItem_SaveAsActionPerformed(): Encountered Error trying to save file");
+//                System.out.println(e.getMessage());
+//                JOptionPane.showMessageDialog(null, "Save Failed", "Error", JOptionPane.ERROR_MESSAGE);
+//            }
+//            changesMade = false;
+//        }
+//        System.out.println("Save As Operated");
     }// GEN-LAST:event_MItem_SaveAsActionPerformed
 
     private void MItem_DefaultSongfilepathActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_DefaultSongfilepathActionPerformed
@@ -701,12 +700,12 @@ public class MainFrame extends javax.swing.JFrame {
     }// GEN-LAST:event_LIST_SongFilenameMouseClicked
 
     private void MItem_CloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_CloseActionPerformed
-        try {
-            db.overwriteSourceDatabase();
-            hardReset();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            db.overwriteSourceDatabase();
+//            hardReset();
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
     }// GEN-LAST:event_MItem_CloseActionPerformed
 
     private void BTN_ChangeSongFilePathActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_BTN_ChangeSongFilePathActionPerformed
@@ -743,45 +742,45 @@ public class MainFrame extends javax.swing.JFrame {
     }// GEN-LAST:event_MItem_RemoveSongFromPlaylistActionPerformed
 
     private void MItem_CreateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_CreateActionPerformed
-        if (changesMade && ProgramActivated) {
-            // Ask user if want to save changes
-            int some_boi_trying_to_close_window = JOptionPane.showConfirmDialog(null,
-                    "Do you wish to save changes?", "Save changes?",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
-
-            if (some_boi_trying_to_close_window == JOptionPane.YES_OPTION) {
-                try {
-                    db.overwriteSourceDatabase();
-                    // JOptionPane.showMessageDialog(null, "Saved.", "Save",
-                    // JOptionPane.PLAIN_MESSAGE);
-                    changesMade = false;
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    if (JOptionPane.showOptionDialog(null,
-                            "Save Failed.\nClose anyway?", "Error",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
-                            null,
-                            new String[]{"Do not close", "Close Anyway"},
-                            "Do not close") == 1) {
-                        return; // stop function processing as user doesn't want to close
-                    } else {
-                        // donothing
-                    }
-                }
-            }
-        }
-        // Starts creating a new database here
-        hardReset();
-        db = new DBManager(this);
-
-        // proceed only if database structure is correct
-        if (db.status == 0) {
-            pm = new Database();
-            toggleMenuItem(true);
-            ProgramActivated = true;
-            changesMade = true;
-        }
+//        if (changesMade && ProgramActivated) {
+//            // Ask user if want to save changes
+//            int some_boi_trying_to_close_window = JOptionPane.showConfirmDialog(null,
+//                    "Do you wish to save changes?", "Save changes?",
+//                    JOptionPane.YES_NO_CANCEL_OPTION,
+//                    JOptionPane.QUESTION_MESSAGE);
+//
+//            if (some_boi_trying_to_close_window == JOptionPane.YES_OPTION) {
+//                try {
+//                    db.overwriteSourceDatabase();
+//                    // JOptionPane.showMessageDialog(null, "Saved.", "Save",
+//                    // JOptionPane.PLAIN_MESSAGE);
+//                    changesMade = false;
+//                } catch (IOException e) {
+//                    System.out.println(e.getMessage());
+//                    if (JOptionPane.showOptionDialog(null,
+//                            "Save Failed.\nClose anyway?", "Error",
+//                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+//                            null,
+//                            new String[]{"Do not close", "Close Anyway"},
+//                            "Do not close") == 1) {
+//                        return; // stop function processing as user doesn't want to close
+//                    } else {
+//                        // donothing
+//                    }
+//                }
+//            }
+//        }
+//        // Starts creating a new database here
+//        hardReset();
+//        db = new DBManager(this);
+//
+//        // proceed only if database structure is correct
+//        if (db.status == 0) {
+//            pm = new Database();
+//            toggleMenuItem(true);
+//            ProgramActivated = true;
+//            changesMade = true;
+//        }
     }// GEN-LAST:event_MItem_CreateActionPerformed
 
     private void MItem_ExitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_ExitActionPerformed
@@ -807,19 +806,19 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     void hardReset() {
-        toggleMenuItem(false);
-        this.playlist.removeAllElements();
-        this.songFileName.removeAllElements();
-        if (db != null && db.conn != null) {
-            try {
-                db.conn.close();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        db = null;
-        pm = null;
-        ProgramActivated = false;
+//        toggleMenuItem(false);
+//        this.playlist.removeAllElements();
+//        this.songFileName.removeAllElements();
+//        if (db != null && db.conn != null) {
+//            try {
+//                db.conn.close();
+//            } catch (Exception e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//        db = null;
+//        pm = null;
+//        ProgramActivated = false;
     }
 
     // Call this function before closing the program
@@ -835,25 +834,25 @@ public class MainFrame extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
         if (some_boi_trying_to_close_window == JOptionPane.YES_OPTION) {
-            try {
-                db.overwriteSourceDatabase();
-                // JOptionPane.showMessageDialog(null, "Saved.", "Save",
-                // JOptionPane.PLAIN_MESSAGE);
-                System.exit(0);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                if (JOptionPane.showOptionDialog(null,
-                        "Save Failed.\nClose anyway?", "Error",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
-                        null,
-                        new String[]{"Do not close", "Close Anyway"},
-                        "Do not close") == 1) {
-                    System.exit(0);
-                } else {
-                    // donothing
-                }
-
-            }
+//            try {
+//                db.overwriteSourceDatabase();
+//                // JOptionPane.showMessageDialog(null, "Saved.", "Save",
+//                // JOptionPane.PLAIN_MESSAGE);
+//                System.exit(0);
+//            } catch (IOException e) {
+//                System.out.println(e.getMessage());
+//                if (JOptionPane.showOptionDialog(null,
+//                        "Save Failed.\nClose anyway?", "Error",
+//                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
+//                        null,
+//                        new String[]{"Do not close", "Close Anyway"},
+//                        "Do not close") == 1) {
+//                    System.exit(0);
+//                } else {
+//                    // donothing
+//                }
+//
+//            }
 
         } else if (some_boi_trying_to_close_window == JOptionPane.NO_OPTION) {
             System.exit(0);
