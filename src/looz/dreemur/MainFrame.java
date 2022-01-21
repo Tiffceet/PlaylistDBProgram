@@ -86,7 +86,6 @@ public class MainFrame extends javax.swing.JFrame {
                     if (m3ureader.status == 0) {
 
                         // pm.insertPlaylist(m3ureader.playlist);
-
                         // convert ArrayList to array
                         String[] arr = new String[m3ureader.songs.size()];
                         for (int a = 0; a < arr.length; a++) {
@@ -455,7 +454,6 @@ public class MainFrame extends javax.swing.JFrame {
                 pm = new Database();
 
                 // proceed only if database's data is not corrupted
-
                 toggleMenuItem(true);
                 for (String pl : pm.getPlaylistNames()) {
                     this.playlist.addElement(pl);
@@ -757,7 +755,7 @@ public class MainFrame extends javax.swing.JFrame {
                             "Save Failed.\nClose anyway?", "Error",
                             JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                             null,
-                            new String[] { "Do not close", "Close Anyway" },
+                            new String[]{"Do not close", "Close Anyway"},
                             "Do not close") == 1) {
                         return; // stop function processing as user doesn't want to close
                     } else {
@@ -841,7 +839,7 @@ public class MainFrame extends javax.swing.JFrame {
                         "Save Failed.\nClose anyway?", "Error",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,
                         null,
-                        new String[] { "Do not close", "Close Anyway" },
+                        new String[]{"Do not close", "Close Anyway"},
                         "Do not close") == 1) {
                     System.exit(0);
                 } else {
@@ -863,13 +861,13 @@ public class MainFrame extends javax.swing.JFrame {
         JTextField jtf = new JTextField();
         jtf.setFont(UTF8_FONT);
 
-        JComponent[] jc = new JComponent[] {
-                label1,
-                jtf
+        JComponent[] jc = new JComponent[]{
+            label1,
+            jtf
         };
 
         // get selected choice
-        String[] yes_no = { "Add", "Cancel" };
+        String[] yes_no = {"Add", "Cancel"};
         int result = JOptionPane.showOptionDialog(null, jc, "New Playlist...", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, null, yes_no, yes_no[0]);
 
@@ -889,7 +887,7 @@ public class MainFrame extends javax.swing.JFrame {
         JTextField jtf = new JTextField();
         jtf.setFont(UTF8_FONT);
         jtf.setText(playlist.get(idx).toString());
-        String[] options = { "Rename", "Cancel" };
+        String[] options = {"Rename", "Cancel"};
 
         int result = JOptionPane.showOptionDialog(null, jtf, "Rename Playlist?", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
@@ -967,15 +965,15 @@ public class MainFrame extends javax.swing.JFrame {
         _lab_song.setFont(DEFAULTFONT);
         _txt_song.setFont(UTF8_FONT);
 
-        JComponent[] jc = new JComponent[] {
-                _dialog_playlist,
-                _lab_path,
-                combo,
-                _lab_song,
-                _txt_song
+        JComponent[] jc = new JComponent[]{
+            _dialog_playlist,
+            _lab_path,
+            combo,
+            _lab_song,
+            _txt_song
         };
 
-        String[] choice = { "Update", "Cancel" };
+        String[] choice = {"Update", "Cancel"};
         int result = JOptionPane.showOptionDialog(null, jc, "Edit song", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, choice, choice[0]);
         if (result == 0) {
@@ -989,6 +987,11 @@ public class MainFrame extends javax.swing.JFrame {
 
             String _str_fullsong_path = String.valueOf(combo.getSelectedItem()) + _str_songname;
             pm.renameSong(playlist, idx, _str_fullsong_path);
+
+            // Update UI
+            TEXT_SongFilePath.setText(_str_fullsong_path);
+            this.songFileName.set(idx, _str_songname);
+
         }
     }
 
@@ -1050,15 +1053,15 @@ public class MainFrame extends javax.swing.JFrame {
         _LAB_1.setFont(UTF8_FONT);
         _LAB_2.setFont(DEFAULTFONT);
 
-        JComponent[] jc = new JComponent[] {
-                _LAB_1,
-                _opt_LAB_opt,
-                _LAB_2,
-                _COM_BOX_paths
+        JComponent[] jc = new JComponent[]{
+            _LAB_1,
+            _opt_LAB_opt,
+            _LAB_2,
+            _COM_BOX_paths
         };
 
-        String[] selection = irregular_file_name_count == 0 ? new String[] { "Add", "Add Path...", "Cancel" }
-                : new String[] { "Add", "Add Path...", "See what files are not .mp3", "Cancel" };
+        String[] selection = irregular_file_name_count == 0 ? new String[]{"Add", "Add Path...", "Cancel"}
+                : new String[]{"Add", "Add Path...", "See what files are not .mp3", "Cancel"};
         int result = JOptionPane.showOptionDialog(null, jc, "Add Songs?", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE, null, selection, selection[0]);
 
@@ -1083,12 +1086,12 @@ public class MainFrame extends javax.swing.JFrame {
             for (int idx : irregular_file_idx) {
                 _opt_model.addElement(songName[idx]);
             }
-            JComponent[] _opt_component = new JComponent[] {
-                    _opt_scrollPane,
-                    new JLabel("Add anyway ?")
+            JComponent[] _opt_component = new JComponent[]{
+                _opt_scrollPane,
+                new JLabel("Add anyway ?")
             };
 
-            String[] _opt_selection = { "Add anyway", "Don't add these", "Cancel" };
+            String[] _opt_selection = {"Add anyway", "Don't add these", "Cancel"};
             int _opt_result = JOptionPane.showOptionDialog(null, _opt_component, "Hmm?", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, _opt_selection, _opt_selection[0]);
             if (_opt_result == 0) {
@@ -1156,13 +1159,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         _lab_1.setFont(DEFAULTFONT);
 
-        JComponent[] _comp = new JComponent[] {
-                _lab_1,
-                pathList_combo
+        JComponent[] _comp = new JComponent[]{
+            _lab_1,
+            pathList_combo
 
         };
 
-        String[] selection = { "Add Path...", "Edit Path...", "Cancel" };
+        String[] selection = {"Add Path...", "Edit Path...", "Cancel"};
         int result = JOptionPane.showOptionDialog(null, _comp, "Song Paths", JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE, null, selection, selection[2]);
         if (result == 0) {
@@ -1189,7 +1192,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     void promptAddPath() {
         changesMade = true;
-        String[] s2 = { "Add", "Cancel" };
+        String[] s2 = {"Add", "Cancel"};
         JTextField _TXT_newPathName = new JTextField();
         _TXT_newPathName.setFont(UTF8_FONT);
         int r2 = JOptionPane.showOptionDialog(null, _TXT_newPathName, "New Path ?", JOptionPane.DEFAULT_OPTION,
@@ -1217,7 +1220,7 @@ public class MainFrame extends javax.swing.JFrame {
     void promptEditPath(String _oldPath) {
         changesMade = true;
         // setting up dialog
-        String[] s3 = { "Update", "Cancel" };
+        String[] s3 = {"Update", "Cancel"};
         JLabel _LAB_oldPath = new JLabel("Old Path: " + _oldPath + "\n");
         JLabel _LAB_newPath_TXT = new JLabel("New Path: ");
         JTextField _TXT_newPath_toBeReplaced = new JTextField(_oldPath);
@@ -1225,11 +1228,11 @@ public class MainFrame extends javax.swing.JFrame {
         _TXT_newPath_toBeReplaced.setFont(UTF8_FONT);
         JLabel _fair_warning = new JLabel("\nWARNING: UPDATING PATH WILL OVERWRITE ALL OLD PATH INTO THE NEW ONES");
 
-        JComponent[] jc = new JComponent[] {
-                _LAB_oldPath,
-                _LAB_newPath_TXT,
-                _TXT_newPath_toBeReplaced,
-                _fair_warning
+        JComponent[] jc = new JComponent[]{
+            _LAB_oldPath,
+            _LAB_newPath_TXT,
+            _TXT_newPath_toBeReplaced,
+            _fair_warning
         };
 
         int result3 = JOptionPane.showOptionDialog(null, jc, "Update Path", JOptionPane.DEFAULT_OPTION,
