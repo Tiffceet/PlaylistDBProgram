@@ -1,8 +1,14 @@
 package looz.dreemur.DTO;
 
 public class Song {
+
     private String filepath;
 
+    /**
+     * CTOR for creating song object
+     *
+     * @param filepath filepath of the song
+     */
     public Song(String filepath) {
         this.filepath = filepath;
     }
@@ -17,7 +23,7 @@ public class Song {
 
     @Override
     public boolean equals(Object song) {
-        if(!(song instanceof Song)) {
+        if (!(song instanceof Song)) {
             return false;
         }
 

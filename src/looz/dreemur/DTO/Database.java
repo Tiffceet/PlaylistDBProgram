@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 /**
  * Instance for storing database of playlists
- * 
+ *
  * @author Looz
  */
 public class Database {
+
     /**
      * To store a list of playlists in DB
      */
@@ -20,6 +21,11 @@ public class Database {
     public Database() {
         playlists = new ArrayList<>();
         filepaths = new ArrayList<>();
+    }
+
+    public Database(ArrayList<Playlist> playlists, ArrayList<String> filepaths) {
+        this.playlists = playlists;
+        this.filepaths = filepaths;
     }
 
     public void addPlaylist(Playlist newPlaylist) {
@@ -42,7 +48,7 @@ public class Database {
 
     public ArrayList<String> getPlaylistNames() {
         ArrayList<String> plNames = new ArrayList<String>();
-        for(int i = 0; i < this.playlists.size(); i++) {
+        for (int i = 0; i < this.playlists.size(); i++) {
             plNames.add(this.playlists.get(i).getPlaylistName());
         }
         return plNames;
