@@ -1,6 +1,7 @@
 package looz.dreemur.DTO;
 
 import java.util.ArrayList;
+import looz.dreemur.generator.MobileV5BackupGenerator;
 
 /**
  * Instance for storing database of playlists
@@ -63,7 +64,7 @@ public class Database {
      * Check if DB file path is defined
      */
     public boolean hasDBPath() {
-        return dbPath == null || dbName == null;
+        return dbPath != null && dbName != null;
     }
 
     public void addFilepath(String filepath) {
@@ -168,6 +169,8 @@ public class Database {
         if (!this.hasDBPath()) {
             throw new RuntimeException("DB Path is not defined yet");
         }
+
+        MobileV5BackupGenerator.generate(this);
 
     }
 }

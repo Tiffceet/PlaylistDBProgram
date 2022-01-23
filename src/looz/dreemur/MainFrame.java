@@ -456,19 +456,7 @@ public class MainFrame extends javax.swing.JFrame {
     }// GEN-LAST:event_MItem_OpenActionPerformed
 
     private void MItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_SaveActionPerformed
-//        try {
-//            if (db.src_DB == null || db.src_DB_path == null) {
-//                MItem_SaveAsActionPerformed(evt);
-//                return;
-//            }
-//            db.overwriteSourceDatabase();
-//            JOptionPane.showMessageDialog(null, "Saved.", "Save", JOptionPane.PLAIN_MESSAGE);
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//            JOptionPane.showMessageDialog(null, "Save Failed", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//        System.out.println("Save Operated");
-//        changesMade = false;
+        pm.saveDB();
     }// GEN-LAST:event_MItem_SaveActionPerformed
 
     private void MItem_SaveAsActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_MItem_SaveAsActionPerformed

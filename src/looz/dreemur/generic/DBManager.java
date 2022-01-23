@@ -27,7 +27,7 @@ public class DBManager {
     private String dbPath;
     private String dbName;
 
-    public DBManager(String dbPath, String dbName) { 
+    public DBManager(String dbPath, String dbName) {
         this.dbPath = dbPath;
         this.dbName = dbName;
     }
@@ -54,31 +54,17 @@ public class DBManager {
     }
 
     /**
-     * Set up database schema
+     * Execute batch queries
      *
+     * @param batchQuery SQL queries separated by ;
      * @throws SQLException
-     * @throws IOException
      */
-    public void prepareTable() throws SQLException, IOException {
-        File f = new File(dbPath + dbName);
-        if (f.exists() && !f.isDirectory()) {
-            return;
-        }
+    public void execBatch(String batchQuery) throws SQLException {
         Connection conn = connectDB();
 
         // Read SQL file from resource folder
-        InputStream is = getClass().getClassLoader().getResourceAsStream("SQL/TABLE_SCHEMA.sql");
-        BufferedReader buf = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-        String line = buf.readLine();
-        StringBuilder sb = new StringBuilder();
-        while (line != null) {
-            sb.append(line).append("\n");
-            line = buf.readLine();
-        }
-        String schemaQuery = sb.toString();
-
         Statement stmt = conn.createStatement();
-        String[] queries = schemaQuery.split(";");
+        String[] queries = batchQuery.split(";");
         for (String query : queries) {
             if (query.trim().compareTo("") == 0) {
                 continue;
