@@ -457,14 +457,8 @@ public class MainFrame extends javax.swing.JFrame {
 //
 //            }
             String dbName = selectedFile.getName();
-            String filepath = selectedFile.getAbsolutePath();
+            String dbPath = looz.dreemur.generic.Util.getFilePathExcludeFile(selectedFile);
 
-            // Construct path without file name.
-            String dbPath = filepath.substring(0, filepath.length() - dbName.length());
-            if (dbPath.endsWith("/")) {
-                dbPath = dbPath.substring(0, dbPath.length() - 1);
-            }
-           
             ArrayList<Playlist> pl = MobileV5BackupParser.getPlaylist(dbPath, dbName);
             ArrayList<String> fp = MobileV5BackupParser.getFilePaths(dbPath, dbName);
             pm = new Database(pl, fp, dbPath, dbName);
