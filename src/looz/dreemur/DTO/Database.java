@@ -160,4 +160,14 @@ public class Database {
         this.dbName = dbName;
     }
 
+    /**
+     * Save the data of this entity class into actual sqlite db file dbPath &
+     * dbName is used as the store location of the .db file
+     */
+    public void saveDB() {
+        if (!this.hasDBPath()) {
+            throw new RuntimeException("DB Path is not defined yet");
+        }
+
+    }
 }

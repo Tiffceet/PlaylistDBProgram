@@ -438,24 +438,6 @@ public class MainFrame extends javax.swing.JFrame {
                 return;
             }
 
-//            // reads DB for further queries
-//            db = new DBManager(this, selectedFile);
-//
-//            // proceed only if database structure is correct
-//            if (db.status == 0) {
-//
-//                ////// more code
-//                pm = new Database();
-//
-//                // proceed only if database's data is not corrupted
-//                toggleMenuItem(true);
-//                for (String pl : pm.getPlaylistNames()) {
-//                    this.playlist.addElement(pl);
-//                }
-//                ProgramActivated = true;
-//                changesMade = true;
-//
-//            }
             String dbName = selectedFile.getName();
             String dbPath = looz.dreemur.generic.Util.getFilePathExcludeFile(selectedFile);
 
