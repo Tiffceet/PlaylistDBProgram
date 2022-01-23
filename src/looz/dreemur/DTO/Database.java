@@ -18,14 +18,19 @@ public class Database {
      */
     private ArrayList<String> filepaths;
 
+    private String dbPath;
+    private String dbName;
+
     public Database() {
         playlists = new ArrayList<>();
         filepaths = new ArrayList<>();
     }
 
-    public Database(ArrayList<Playlist> playlists, ArrayList<String> filepaths) {
+    public Database(ArrayList<Playlist> playlists, ArrayList<String> filepaths, String dbPath, String dbName) {
         this.playlists = playlists;
         this.filepaths = filepaths;
+        this.dbPath = dbPath;
+        this.dbName = dbName;
     }
 
     public void addPlaylist(Playlist newPlaylist) {
@@ -52,6 +57,13 @@ public class Database {
             plNames.add(this.playlists.get(i).getPlaylistName());
         }
         return plNames;
+    }
+
+    /**
+     * Check if DB file path is defined
+     */
+    public boolean hasDBPath() {
+        return dbPath == null || dbName == null;
     }
 
     public void addFilepath(String filepath) {
@@ -130,6 +142,22 @@ public class Database {
     public String pathOf(String playlist, String song) {
         System.out.println("pathOf(): Not Implemented");
         return "Not Implemented";
+    }
+
+    public String getDbPath() {
+        return dbPath;
+    }
+
+    public void setDbPath(String dbPath) {
+        this.dbPath = dbPath;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
     }
 
 }

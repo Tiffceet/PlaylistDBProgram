@@ -465,11 +465,9 @@ public class MainFrame extends javax.swing.JFrame {
                 dbPath = dbPath.substring(0, dbPath.length() - 1);
             }
            
-            System.out.println(dbPath);
-            System.out.println(dbName);
             ArrayList<Playlist> pl = MobileV5BackupParser.getPlaylist(dbPath, dbName);
             ArrayList<String> fp = MobileV5BackupParser.getFilePaths(dbPath, dbName);
-            pm = new Database(pl, fp);
+            pm = new Database(pl, fp, dbPath, dbName);
             toggleMenuItem(true);
             refreshView();
             ProgramActivated = true;
